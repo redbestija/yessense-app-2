@@ -1,0 +1,405 @@
+* {
+    -webkit-user-select: none;
+}
+
+body {
+    padding: 0px;
+    margin: 0px;
+    background-color: rgb(240,242,243);
+}
+
+
+header{
+    position: relative;
+    background-color: rgb( 67, 67, 70 );
+    text-align: center;
+}
+
+header .header-text{
+  font-size: 24px;
+  font-family: "Helvetica";
+  color: rgb( 255, 255, 255 );
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 1px 1.732px 0px rgb( 0, 0, 0 );
+  padding: 13px 5px 12px 0px;
+  margin-left:42px;
+
+}
+
+.arrow-button{
+    position: absolute;
+    top: 0;
+    background-color: rgb( 159, 159, 159 );
+    box-shadow: 3px 5.196px 0px 0px rgb( 100, 100, 100 );
+    text-decoration: none;
+  /*    font-size: 30px;
+    font-family: "Helvetica";
+    color: rgb( 67, 67, 70 );
+    text-transform: uppercase;
+    text-align: center;
+    text-shadow: 1px 1.732px 0px rgb( 255, 255, 255 );
+    z-index: 100;
+    */
+}
+
+.arrow-button-left{
+      left: 10px;
+}
+.arrow-button-right{
+      right: 10px;
+}
+
+.content{
+   
+}
+
+.sentense-container{
+    margin: 10px;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb( 220, 220, 220 );
+    background-color: rgb( 255, 255, 255 );
+    text-align: center;
+
+}
+
+.sentense-container .text{
+  font-size: 19px;
+  font-family: "Helvetica";
+  line-height: 1.267;
+
+  color: rgb( 174, 176, 182 );
+  
+  text-align: center;
+  margin: 0 auto;   
+}
+
+.sentense-container .text .selected{
+    color: rgb( 67, 67, 70 );
+    text-transform: uppercase;
+    display: block;
+}
+
+
+.adj-section{
+   margin: 10px auto 10px auto;
+  text-align: center;
+}
+
+.adj-button{
+  border-radius: 10px;
+  border:0px;
+  font-size: 21px;
+  font-family: "Helvetica";
+  color: rgb( 255, 255, 255 );
+  text-transform: uppercase;
+  text-align: center;
+  margin: 5px;
+  padding: 5px;
+
+  display: inline-block;
+  text-decoration: none;
+}
+
+.adj-section .adj-button{
+  background-color: rgb( 101, 196, 240 );
+  box-shadow: 3px 5.196px 0px 0px rgb( 37, 144, 194 );
+}
+
+.adj-section .adj-button.button-selected{
+
+  background-color: rgb( 226, 122, 81 );
+  box-shadow: 3px 5.196px 0px 0px rgb( 175, 70, 29 );
+}
+
+/**  copied from bootsrap*/
+/*.adj-button:hover
+{
+  color: red;
+  background-color: blue;
+}
+*/
+.adj-button:active,
+.adj-button.active 
+{
+  /* OLD : background-color: rgb( 101, 196, 240 );*/
+  background-color: rgb( 81, 176, 220 );
+}
+
+.adj-button.button-selected:active,
+.adj-button.button-selected.active 
+{
+ /*OLD background-color: rgb( 226, 122, 81 );*/
+ background-color: rgb( 206, 102, 61 );
+}
+/** end of copied from bootsrap*/
+
+
+.separator{
+  height: 1px;
+  background-color: rgb( 219, 219, 219 );
+  box-shadow: 1px 1.732px 0px 0px rgb( 255, 255, 255 );
+  margin: 10px 5% 10px 5%;
+}
+
+footer{
+/*    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+*/  margin: 0 auto 0 auto;
+  text-align: center;
+}
+
+footer .adj-button{
+  background-color: rgb( 159, 159, 159 );
+  box-shadow: 3px 5.196px 0px 0px rgb( 67, 67, 70 );
+
+  margin: 10px;
+  margin-bottom: 30px;
+}
+
+/****************************************** LAYOUT 2 ****************************************/
+
+.question-container{
+    display:block;
+    
+    padding: 0.4em 0;
+    padding-left: 5.5em;
+    
+    background-image: -moz-linear-gradient( 90deg, rgb(228,228,228) 0%, rgb(255,255,255) 100%);
+    background-image: -webkit-linear-gradient( 90deg, rgb(228,228,228) 0%, rgb(255,255,255) 100%);
+    background-image: -ms-linear-gradient( 90deg, rgb(228,228,228) 0%, rgb(255,255,255) 100%);
+
+
+    border-left: 0.3em solid rgb(97,188,231);
+    margin: 0.1em 0;
+    position: relative;
+
+    font-size: 20px;
+    font-family: "Helvetica";
+
+    overflow: scroll;
+    text-decoration: none;
+}
+
+.question-container.no-answer{
+/*  background-image: -webkit-linear-gradient( 90deg, rgb(220,182,188) 0%, rgb(255,235,235) 100%);
+  background-image: -moz-linear-gradient( 90deg, rgb(220,182,188) 0%, rgb(255,235,235) 100%);
+  background-image: -ms-linear-gradient( 90deg, rgb(220,182,188) 0%, rgb(255,235,235) 100%);
+*/}
+
+.question{
+  
+  text-align: left;
+
+  position: absolute;
+  left: 0.5em;
+
+  color: rgb( 174, 176, 182 );
+  text-shadow: 1px 1.732px 0px rgb( 255, 255, 255 );
+}
+
+
+
+.answer{
+  font-weight: bold;
+  text-align: left;
+}
+
+  
+.answer-prompt{
+  color: rgb( 174, 176, 182 );
+  text-shadow: 1px 1.732px 0px rgb( 255, 255, 255 );
+  padding-right: 0.5em;
+  /*display: inline-block;*/
+}
+.answer-text{
+  color: rgb( 67, 67, 70 );
+  text-shadow: 1px 1.732px 0px rgb( 255, 255, 255 );
+  text-transform: uppercase;
+  /*display: inline-block;*/
+}
+
+.placeholder{
+  display: inline-block;
+  border-width: 0 4px 4px 4px;
+  border-color: rgb( 208, 208, 208 );
+  border-style: solid;
+  /*position: absolute;*/
+  left: 286px;
+  top: 171px;
+  width: 2em;
+  height: 3px;
+  margin: 0 0.2em;
+
+}
+
+.question-container.no-answer .placeholder{
+    border-color: rgb( 240, 67, 70 );
+}
+
+.selected .placeholder{
+    border-color: rgb( 67, 67, 70 );
+}
+
+.question-container.container-selected{    
+    background-image: -moz-linear-gradient( 90deg, rgb(146,146,146) 0%, rgb(163,163,163) 100%);
+    background-image: -webkit-linear-gradient( 90deg, rgb(146,146,146) 0%, rgb(163,163,163) 100%);
+    background-image: -ms-linear-gradient( 90deg, rgb(146,146,146) 0%, rgb(163,163,163) 100%);
+
+    border-left: none;
+    padding-left: 10.3em;
+}
+
+.question-container.container-selected .answer-text{
+    text-shadow: none;
+}
+
+.question-container.container-selected .question{
+    padding-left: 0.3em;
+}
+
+.question-container.container-selected .question, 
+.question-container.container-selected .answer, 
+.question-container.container-selected .answer-prompt, 
+.question-container.container-selected {
+  color: rgb( 255, 255, 255 );
+  text-shadow: none;
+
+}
+
+.question-container.container-selected .answer, .{
+  color: rgb( 255, 255, 255 );
+    }
+
+
+.question-container.container-selected .placeholder{
+      border-color: rgb( 255, 255, 255 );
+}
+
+.adj-button.submit-button{
+    font-size: 30px;
+    padding: 5px;
+    background-color: rgb( 226, 122, 81 );
+    box-shadow: 3px 5.196px 0px 0px rgb( 175, 70, 29 );
+
+}
+
+.adj-button.submit-button.disabled{
+  background-color: rgb(221, 157, 131);
+  box-shadow: 3px 5.196px 0px 0px rgb(187, 118, 91);
+
+
+     /*OLD*/
+/* 
+background-color: rgb( 152, 152, 152 );
+box-shadow: 3px 5.196px 0px 0px rgb( 175, 170, 175 );
+
+  background-color: rgb( 226, 122, 81 );
+  box-shadow: 3px 5.196px 0px 0px rgb( 175, 70, 29 );
+*/
+}
+
+.sentense-container{
+    padding: 5px;
+}
+
+.text.login{
+  color: rgb( 67, 67, 70 );
+}
+
+.input-container{
+  padding: 2px 10px 2px 10px;
+  box-sizing: border-box;
+
+}
+
+input{
+  width:100%;
+  height:2em;
+  font-size: 20px;
+  border-radius: 3px;
+  border-color: rgb( 220, 220, 220 );
+  display: block;
+  padding: 2px 5px 2px 5px;
+  box-sizing: border-box;
+  -webkit-user-select: text;
+  text-align: center;
+}
+
+
+
+/*************************** Messi popups**************/
+.messi-content {
+  font: 1.2em normal helvetica, arial;
+}
+
+.messi-titlebox {
+  font: 1.3em bold helvetica, arial;
+
+  font-family: "Helvetica";
+}
+
+messi-titlebox {
+  background-image: ;
+  background-color: rgb(67,67,70);
+}
+
+@media (min-width: 1000px){
+  #container{
+  left:25%;
+  max-width:50%;
+  margin: 0 auto 0 auto;
+  border:2px solid rgb(67,67,70);
+  /*padding:10px;*/
+}
+}
+
+.notifyjs-foo-base {
+  width: 300px;
+  color: #B94A48;
+  background-color: #F2DEDE;
+  border-color: #EED3D7;
+  /*  color: #B94A48;
+   background-color: #F2DEDE;;
+  border-color: #EED3D7;*/
+
+   border: 1px;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.notifyjs-foo-base .title {
+  margin: 10px 0 10px 10px;
+  font-size: 20px;
+  font:bold;
+}
+.notifyjs-foo-base .text {
+  font-size: 20px;
+  margin: 10px 0 0 10px;
+}
+
+/*FOX THIS LATER!!!*/
+.notifyjs-foo2-base {
+  width: 300px;
+  /*background: #F5F5F5;*/
+  color: #468847;
+  background-color: #DFF0D8;
+  border-color: #D6E9C6;
+   border: 1px;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.notifyjs-foo2-base .title {
+  margin: 10px 0 10px 10px;
+  font-size: 20px;
+  font:bold;
+}
+.notifyjs-foo2-base .text {
+  font-size: 20px;
+  margin: 10px 0 0 10px;
+}

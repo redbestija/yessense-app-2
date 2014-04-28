@@ -1,0 +1,21 @@
+{ "name": "people",
+ "children": [
+      {"name": "Tomi", "size": 2},
+      {"name": "Evgenia", "size": 4},
+      {"name": "Jan", "size": 3},
+      {"name": "Smbd else", "size": 10},
+      {"name": "Tomi", "size": 2},
+      {"name": "Evgenia", "size": 4},
+      {"name": "Jan", "size": 3},
+      {"name": "Smbd else", "size": 10},
+      {"name": "Tomi", "size": 2},
+      {"name": "Evgenia", "size": 4},
+      {"name": "Jan", "size": 3},
+      {"name": "Smbd else", "size": 10},
+      {"name": "Tomi", "size": 2},
+      {"name": "Evgenia", "size": 4},
+      {"name": "Jan", "size": 3},
+      {"name": "Smbd else", "size": 10}
+ ]
+}
+

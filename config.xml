@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="fi.aalto.media.cloudsensecom.example.hello" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>YouSense</name>
+    <description>
+        YouSense allows you to voice your experiece about spaces! Say how do you feel where you are!
+    </description>
+    <author email="evgenia.litvinova@aalto.fi" href="http://aalto.fi">
+        Evgenia and Tomi Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+    <preference name="orientation" value="portrait" />
+</widget>

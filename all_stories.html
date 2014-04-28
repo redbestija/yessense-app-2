@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+    <link rel="stylesheet" href="css/new_layout_styles.css">
+    <style type="text/css">
+    .sentense-container{
+        margin: 20px;
+        padding: 20px;
+    }
+    .header-text{
+       margin: 20px 0 0 0;   
+   }
+   .sentense-container .text {
+    color:rgb(67,67,70);
+    font-size: 17px;
+    padding: 10px 0; 
+}
+@media (min-width: 1000px){
+  body{
+      left:25%;
+      max-width:50%;
+      margin: 0 auto 0 auto;
+      border: 2px solid rgb(67,67,70);
+      height: 100%;
+      /*padding:10px;*/
+  }
+}
+.sentense-container.footer{
+    margin: 0;
+    padding: 10px;
+
+    margin-top: 30px;
+/*                position:fixed;
+                bottom: 0px;
+            */            }
+            textarea{
+              width:100%;
+              font-size: 16px;
+              border-radius: 3px;
+              /*border-color: rgb( 220, 220, 220 );*/
+              display: block;
+              padding: 2px 5px 2px 5px;
+              box-sizing: border-box;
+              -webkit-user-select: text;
+          }
+          </style>
+          <meta name="viewport" content="width=device-width">
+          <title>All stories for Design Factory</title>    
+      </head>
+      <body>
+        <header>
+            <img src="res/YouSense_Logo.png" alt="Logo" style="margin: 10px 10px 10px 20px"width="300px"> </img>    
+            <!-- <div class="header-text">Welcome to YouSense!</div> -->
+            <br></br>
+
+        </header>
+        <div class="content">
+            <div id="all-messages-container">
+<!--                 <div class="text">
+                    <span style="font-weight:bold">Evgenia(
+                        <timeAgo class="timeago" title="2014-03-13T22:21:29"></timeAgo> 
+                        ):
+                    </span>
+                    <span style=""> Now in Cafe Kafis I am meeting it is just right and motivating because of people around and nice space I like it </span>
+                </div>
+ -->            </div>
+            <script src="js/jquery-1.9.1.min.js"></script>
+            <script src="js/jquery.timeago.js" type="text/javascript"></script>
+            <script>
+            
+        // Responses 
+        var response =[];
+        // Gets all users and messages from DF
+        // {message, user}
+        var getUsersAndMessages = "http://yousense.aalto.fi/d2rq/sparql?query="+
+        "PREFIX%20rdf%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0APREFIX%20rdfs%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0APREFIX%20experience%3A%20%3Chttp%3A%2F%2Flinkedearth.org%2Fexperience%2Fns%2F%3E%0APREFIX%20fn%3A%20%20%20%20%20%20%3Chttp%3A%2F%2Fwww.w3.org%2F2005%2Fxpath-functions%23%3E%0APREFIX%20vocab%3A%20%3Chttp%3A%2F%2Fyousense.aalto.fi%2Fd2rq%2Fresource%2Fvocab%2F%3E%0A%0ASELECT%20%3Fmessage%20%3Fuser%20%3Ftimestamp%20WHERE%20%7B%0A%20%20%3Fsub%20a%20experience%3AExperience%3B%20vocab%3AhasWholeMessage%20%3Fmessage%20.%0A%20%20%3Fsub%20experience%3AhasExperiencer%20%3Fuser%20.%0A%20%20%3Fsub%20experience%3AhasTime%20%3Ftimestamp%20.%0A%20%20%3Fsub%20vocab%3Ais_testing%200.%0A%20%20%3Fsub%20vocab%3Asource%201.%0A%20%20filter%20(%3Fmessage%20!%3D%20%22%22).%0A%7D%20order%20by%20ASC(%3Ftimestamp)%0A" 
+        + "&debug=on&timeout=&format=application%2Fsparql-results%2Bjson&save=display&fname=";
+        $.getJSON(getUsersAndMessages, {}, function(data) {
+            for(var i = 0; i < data["results"]["bindings"].length; i++) {
+                response.push({
+                    user:data["results"]["bindings"][i]["user"].value,
+                    message: data["results"]["bindings"][i]["message"].value.replace(/\ +/g, ' '), 
+                    when: data["results"]["bindings"][i]["timestamp"].value});
+            };
+            console.log('data = ', response);
+           showStories();
+        });
+
+         function showStories(){
+            for (var i = response.length - 1; i >= 0; i--) {
+                $("#all-messages-container").append(getOneStoryHTML(response[i].user, response[i].message, response[i].when));
+            };
+            jQuery("timeAgo.timeago").timeago();
+             // var str; 
+             // str = str.replace(/\ +/g, ' ');
+        }
+
+        function getOneStoryHTML(userName, what, when){
+            var oneStoryHTML = "<div class=\"sentense-container\">" + 
+                "<div class=\"text\">";
+                oneStoryHTML += "<span style = \"font-weight:bold\">" + userName + " (" +
+                    "<timeAgo class=\"timeago\" title=\"" + when + "\"></timeAgo>" + 
+                    "):</span>";
+                oneStoryHTML += "<span style = \"\">" + what + "</span>";
+            oneStoryHTML += "</div></div>";
+            return oneStoryHTML;    
+            // return oneStoryHTML;
+        }
+
+        // function clearOldStories(){
+
+        // }
+
+        </script>
+    </body>
+    </html>

@@ -1,10 +1,18 @@
 /* TODO: 
  1. dispable style for submit button
- 2. DONE red highlight if an item is not filled
- 3. DONE cousor for buttons
- 4. DONE styles for buttons
- 5. make actual sending
  6. get adjectives from the db! 
+
+ + send IDs intead of values! 
+ 1. Create OWN category (now only created visually)
+ 2. Save answers (both here and there)
+ 3. Add properties to the config file (about necessary questions)
+ 4. Add locaitons for other places
+
+ 5. user question_id option_id(could be -1) intensity? 
+ 6. UPDATE list of options (WHEN???)
+ 7. Send options as list -> no division between reasons and activities
+
+ - send values or ids? if values then naturally no duplicates   
  */
 
 var UserName="";
@@ -16,7 +24,7 @@ var UserRoomDefault="1234";
 var Option = function(title, intensity, positiveness){
     this.title = title;
     this.intensity = intensity;
-    this.selectedIntensity = -1;
+    // this.selectedIntensity = -1;
     if (positiveness == undefined){
         this.positiveness = 0;
     }
@@ -25,76 +33,109 @@ var Option = function(title, intensity, positiveness){
     }
 }
 
-Option.prototype.getInWords = function(){
-    if (this.selectedIntensity >= 0){
-        return this.intensity[this.selectedIntensity] + " " + this.title;
-    }
-    else{
-        return this.title;
-    }
+// // Category (has options inside)
+// // Temperature, [["Cold", [very, slightly], 0], [...]]
+// var Category = function(title, options){
+//     this.title = title;
+//     this.options = options;
+// }
+
+
+// // Item
+// // "What?","The actual feeling", "I feel", [[Categoy, options],[..]], false, [option1, option2], iddd, true  
+// //TODO: remove idInIHTM
+// var Item = function(question, title, prefix, categories, showCategories, selectedOptions, idInHTML, isRequired, isOnlyOneSelected){
+//     this.question = question;
+//     this.title = title;
+//     this.prefix = prefix;
+//     this.categories = categories;
+//     this.showCategories = showCategories;
+//     ////// !!!!!!!!!!!!!!!!!!!!!!!!
+//     this.selectedOptions = selectedOptions;
+//     this.idInHTML = idInHTML;
+//     this.isRequired = isRequired;
+//     this.isOnlyOneSelected = isOnlyOneSelected;
+// }
+
+
+function getOptionInWords(opt){
+    // if (opt.selectedIntensity >= 0){
+    //     return opt.intensity[opt.selectedIntensity] + " " + opt.title;
+    // }
+    // else{
+        return opt.title;
+    // }
 }
 
-// Category (has options inside)
-// Temperature, [["Cold", [very, slightly], 0], [...]]
-var Category = function(title, options){
-    this.title = title;
-    this.options = options;
-}
 
-Category.prototype.getOptions = function(){
-    var i;
-    for(i = 0; i < this.options.length; i+=1){
-    }
-}
+// TODELETE
+// Option.prototype.getInWords = function(){
+//     if (this.selectedIntensity >= 0){
+//         return this.intensity[this.selectedIntensity] + " " + this.title;
+//     }
+//     else{
+//         return this.title;
+//     }
+// }
 
-// Item
-// "What?","The actual feeling", "I feel", [[Categoy, options],[..]], false, [option1, option2], iddd, true  
-//TODO: remove idInIHTM
-var Item = function(question, title, prefix, categories, showCategories, selectedOptions, idInHTML, isRequired, isOnlyOneSelected){
-    this.question = question;
-    this.title = title;
-    this.prefix = prefix;
-    this.categories = categories;
-    this.showCategories = showCategories;
-    ////// !!!!!!!!!!!!!!!!!!!!!!!!
-    this.selectedOptions = selectedOptions;
-    this.idInHTML = idInHTML;
-    this.isRequired = isRequired;
-    this.isOnlyOneSelected = isOnlyOneSelected;
-}
 
-Item.prototype.getInWords = function(){
+
+function getItemInWords(itemToUse){
     var resultingString = "";
     var j;
-    for(j = 0; j < this.selectedOptions.length; j+=1){
+    for(j = 0; j < itemToUse.selectedOptions.length; j+=1){
         if (j==0){
             // The first item in the list
-            resultingString += " " + this.selectedOptions[j].getInWords();
+            resultingString += " " + getOptionInWords(itemToUse.selectedOptions[j]);
         }
         else {
             if  (j == this.selectedOptions.length-1){
                 // last one; and needed
-                resultingString += " and " + this.selectedOptions[j].getInWords();
+                resultingString += " and " + getOptionInWords(itemToUse.selectedOptions[j]);
             }
             else {
                 // It is not the last one
                 // comma needed
-                resultingString += ", " + this.selectedOptions[j].getInWords();
+                resultingString += ", " + getOptionInWords(itemToUse.selectedOptions[j]);
             }
       }
     }
-    // if (this.selectedOptions.length == 0) {
-    //     // no selected options
-    //     resultingString = resultingString + " ..."
-    // }
     return resultingString;
     
 }
 
-//
-Item.prototype.isFilledAsSupposed = function(){
-    if (this.isRequired){
-        if (this.selectedOptions.length > 0){
+// TODELETE
+// Item.prototype.getInWords = function(){
+//     var resultingString = "";
+//     var j;
+//     for(j = 0; j < this.selectedOptions.length; j+=1){
+//         if (j==0){
+//             // The first item in the list
+//             resultingString += " " + this.selectedOptions[j].getInWords();
+//         }
+//         else {
+//             if  (j == this.selectedOptions.length-1){
+//                 // last one; and needed
+//                 resultingString += " and " + this.selectedOptions[j].getInWords();
+//             }
+//             else {
+//                 // It is not the last one
+//                 // comma needed
+//                 resultingString += ", " + this.selectedOptions[j].getInWords();
+//             }
+//       }
+//     }
+//     // if (this.selectedOptions.length == 0) {
+//     //     // no selected options
+//     //     resultingString = resultingString + " ..."
+//     // }
+//     return resultingString;
+    
+// }
+
+function isFilledAsSupposed (itemToCheck){
+    if (itemToCheck.isRequired){
+        if (itemToCheck.selectedOptions.length > 0){
             // No problems, there is a value
             return true;
         }
@@ -108,11 +149,28 @@ Item.prototype.isFilledAsSupposed = function(){
     }
 }
 
-Item.prototype.selectedOptionsToArray = function(){
+// TODELETE
+// Item.prototype.isFilledAsSupposed = function(){
+//     if (this.isRequired){
+//         if (this.selectedOptions.length > 0){
+//             // No problems, there is a value
+//             return true;
+//         }
+//         else{
+//             // Value is required, but not selected
+//             return false;
+//         }
+//     }
+//     else {
+//         return true;
+//     }
+// }
+
+ function selectedOptionsToArray(itemToUse){
     var resultingArray = [];
     var i;
-    for(i = 0; i < this.selectedOptions.length; i+=1){
-      resultingArray.push(this.selectedOptions[i].title);
+    for(i = 0; i < itemToUse.selectedOptions.length; i+=1){
+      resultingArray.push(itemToUse.selectedOptions[i].title);
     }
     // Make it not empty! 
     if (resultingArray.length ==0){
@@ -121,6 +179,23 @@ Item.prototype.selectedOptionsToArray = function(){
     return resultingArray;
 
 }
+
+
+// TODELETE
+// Item.prototype.selectedOptionsToArray = function(){
+//     var resultingArray = [];
+//     var i;
+//     for(i = 0; i < this.selectedOptions.length; i+=1){
+//       resultingArray.push(this.selectedOptions[i].title);
+//     }
+//     // Make it not empty! 
+//     if (resultingArray.length ==0){
+//       resultingArray.push("");
+//     }
+//     return resultingArray;
+
+// }
+
 //320, 460
 var designWidth = 360; // zoom to fit this ratio
 var designHeight = 500; // not 800 b/c top bar is 38 pixels tall
@@ -149,7 +224,8 @@ function zoomScreen() {
 }
 
 // ****************** ITEM DEFINITION!!!! ***********************//
-var items = [
+/*
+var items2 = [
              new Item("When?","Timestamp", "",
                       [new Category("Own",
                                     [
@@ -190,9 +266,9 @@ var items = [
                                     [
                                     new Option("The Stage", []),
                                     new Option("The Studio", []),
-				                            new Option("Kino", []),
+                                    new Option("Kino", []),
                                     new Option("B4!12", [])
-				                            ]
+                                    ]
                                     ),
                       new Category(
                                     "Meeting rooms",
@@ -206,9 +282,9 @@ var items = [
                                     new Option("Skype Out", []),
                                     new Option("iWork", []),
                                     new Option("Big Sister", [])
-				                           ]
-				                          ),
-			                new Category(
+                                   ]
+                                  ),
+                      new Category(
                                     "Produciton and Prototyping",
                                     [
                                     new Option("Metalshop", []),
@@ -394,6 +470,7 @@ var items = [
                       false)
 
              ];
+             */
 
 //this.items[2].selectedOptions[0] = items[2].categories[0].options[0];
 resetAnswers();
@@ -421,7 +498,7 @@ function isEverythingFilled(){
     var isIt = true;
     var i;
     for(i = 0; i < this.items.length; i+=1){
-        if (!items[i].isFilledAsSupposed()){
+        if (!isFilledAsSupposed(items[i])){
             isIt = false;
         }
     }
@@ -447,7 +524,7 @@ function getAnswerInWords(){
         if (items[o].prefix != ""){
           toAdd += items[o].prefix;
         }
-        toAdd += items[o].getInWords();
+        toAdd += getItemInWords(items[o]);
         if (o == 0 || o == 1){
           toAdd += " ";
         }
@@ -492,8 +569,8 @@ function resetAnswers(){
     items[i].selectedOptions = [];
   }
 
-  this.items[0].selectedOptions.push(items[0].categories[1].options[0]);
-  this.items[1].selectedOptions.push(items[1].categories[1].options[0]);
+  //items[0].selectedOptions.push(items[0].categories[1]).options[0]);
+  //this.items[1].selectedOptions.push(items[1].categories[1].options[0]);
 
 }
 
@@ -526,7 +603,7 @@ var homePage = displayHomePage();
 function displayItem(itemTD, itemN){
     var itemCode = "";
     itemCode += ' <a href="#question' + itemN +'" class="question-container'; 
-    if (!itemTD.isFilledAsSupposed()){
+    if (!isFilledAsSupposed(itemTD)){
       itemCode += ' no-answer';
     }
     itemCode += '">'+
@@ -535,7 +612,7 @@ function displayItem(itemTD, itemN){
                 ' <span class="answer-prompt"> '+itemTD.prefix+'</span>';
                 if(itemTD.selectedOptions.length > 0){
                   // There's a value! Show value
-                  itemCode += '<span class="answer-text"> '+itemTD.getInWords()+' </span>'
+                  itemCode += '<span class="answer-text"> '+getItemInWords(itemTD)+' </span>'
                 }
                 else{
                   // There's no value! Show playsholder
@@ -562,22 +639,6 @@ function displayHomePage(){
       // alert(ii + homePageCode);
       homePageCode += displayItem(items[ii], ii);
     }      
-
-    // '<div>' +
-    // '<div class="header"><h1> <div class="WHAT"> How do you feel?</div></h1></div>' +
-    //    '<div class="buttonstyle"><span class="OKtext"> button</span></div>' +
-    // '<div class="scroller">' +
-    // //        '<button type="button" class="btn btn-default btn-lg" id="buttonID11" onclick="onchangeinput();">qwer</button> ' +
-    // //        '<button type="button" class="btn btn-default btn-lg" id="buttonID11" onclick="onchangeinput();">qwet</button> ' +
-    // '<ul class="nav nav-pills nav-stacked">' +
-    // '<li><a href="#page1"><strong>'+items[0].getInWords()+'</strong></a></li>' +
-    // //                '<li><a href="#page1">'+items[0].getInWords()+'</a> <span style="float:right;">a</span></li>' +
-    
-    // '<li><a href="#page2"><strong>' + items[1].getInWords() + '</strong></a></li>' +
-    // '<li' + getItemBackgroundCode(items[2]) + '><a href="#page3"><strong>'+ items[2].getInWords() +'</strong></a></li>' +
-    // '<li' + getItemBackgroundCode(items[3]) + '><a href="#page4"><strong>'+ items[3].getInWords() +'</strong></a></li>' +
-    // '<li' + getItemBackgroundCode(items[4]) + '><a href="#page5"><strong>'+ items[4].getInWords() +'</strong></a></li>';
-    // homePageCode +=        '</ul>';
     
     // end of content div
     homePageCode += '</div>';
@@ -718,31 +779,31 @@ $(window).on('hashchange', route);
 // e - element that was clicked
 var ePrevious = ""; // previosly clicked element 
 function onbuttonclicked(e, clickedItemNumber, clickedCategoryNumber, ClickedOptionNumber){
-	var itemIsAt = isThisOptionSelected (clickedItemNumber, clickedCategoryNumber, ClickedOptionNumber);
-	if (itemIsAt >= 0){
-		// This item is already selected
-		// Remove item from selected
-		// 11 22 33 -> 33 22 11 -> 33 22  
-		var lastItem = this.items[clickedItemNumber].selectedOptions.length - 1;
-		// Put the last item to the itemIsAt place
-		this.items[clickedItemNumber].selectedOptions[itemIsAt] = 
-		this.items[clickedItemNumber].selectedOptions[lastItem];
-		
-		// Remove the last one
-		this.items[clickedItemNumber].selectedOptions.pop();
-		
-		// Update style and sentense
-	  updateDetailsSentence(clickedItemNumber);
-	    
-	    // Change the style back
+  var itemIsAt = isThisOptionSelected (clickedItemNumber, clickedCategoryNumber, ClickedOptionNumber);
+  if (itemIsAt >= 0){
+    // This item is already selected
+    // Remove item from selected
+    // 11 22 33 -> 33 22 11 -> 33 22  
+    var lastItem = this.items[clickedItemNumber].selectedOptions.length - 1;
+    // Put the last item to the itemIsAt place
+    this.items[clickedItemNumber].selectedOptions[itemIsAt] = 
+    this.items[clickedItemNumber].selectedOptions[lastItem];
+    
+    // Remove the last one
+    this.items[clickedItemNumber].selectedOptions.pop();
+    
+    // Update style and sentense
+    updateDetailsSentence(clickedItemNumber);
+      
+      // Change the style back
       // Remove selected class
     e.className = e.className.replace(/\bbutton-selected\b/,'');
 
-		
-	}	
-	else{
-		// Item is not in selected
-		if (this.items[clickedItemNumber].isOnlyOneSelected){
+    
+  } 
+  else{
+    // Item is not in selected
+    if (this.items[clickedItemNumber].isOnlyOneSelected){
       // Need to delect the prev. one then
 // alert("again" + ePrevious);
       //Style
@@ -753,21 +814,21 @@ function onbuttonclicked(e, clickedItemNumber, clickedCategoryNumber, ClickedOpt
       this.items[clickedItemNumber].selectedOptions.pop();
 
     }
-		// Select it
-		
-		
-		// Update style and sentense
-		 
-	    this.items[clickedItemNumber].selectedOptions.push(items[clickedItemNumber].categories[clickedCategoryNumber].options[ClickedOptionNumber]);
+    // Select it
+    
+    
+    // Update style and sentense
+     
+      this.items[clickedItemNumber].selectedOptions.push(items[clickedItemNumber].categories[clickedCategoryNumber].options[ClickedOptionNumber]);
 
       // Add selected
       e.className += " button-selected";
       ePrevious = e.id;
       // alert(ePrevious + ' dd' + e.id);
-    	updateDetailsSentence(clickedItemNumber );
-    	
+      updateDetailsSentence(clickedItemNumber );
+      
     }
-	
+  
 
     //    alert('Hello from input' + clickedItemNumber + clickedCategoryNumber + ClickedOptionNumber);
     //
@@ -775,52 +836,6 @@ function onbuttonclicked(e, clickedItemNumber, clickedCategoryNumber, ClickedOpt
 }
 
 
-//Gets Locations
-//   $().ready(function () {
-//   var url = 'http://54.246.92.117/icqa/location/all&jsonp=?';
-
-//   $.get(url, function (location) {
-//     alert('ok');// can use 'data' in here...
-//   });
-// });
-
-  // var myurl = 'http://wikidata.org/w/api.php?action=wbgetentities&sites=frwiki&titles=France&languages=zh-hans|zh-hant|fr&props=sitelinks|labels|aliases|descriptions&format=json';
-  // var myurl = 'http://54.246.92.117/icqa/location/all';
- // $.ajax({
- //   dataType: "application/json",
- //   url: myurl ,
- //   }).done(function ( data ) {
- //   alert ('!!');
- // });
-
- //  $.ajax({
- //  dataType: "applicatino/json",
- //  url: myurl + '&callback=?',
- //  }).done(function ( data ) {
- //  alert ('!!');// do my stuff
- // });
-
- 
-// $.getJSON( myurl, function(data) {
-//   alert ('!!'); // do my stuff
-// });
-
-
-  // function getLocations(){
-//   var req = new XMLHttpRequest;  
-//   //req.overrideMimeType("application/json");  
-//   req.open('GET', 'http://54.246.92.117/icqa/location/all', true);  
-// req.onreadystatechange = function (aEvt) {
-//   if (req.readyState == 4) {
-//      if(req.status == 200)
-//       alert(req.responseText);
-//      else
-//       alert("Error loading page\n");
-//   }
-// };  // var target = this;  
-//   // req.onload  = function() {target.parseJSON(req, url)};  
-//   req.send(null);
-// }
   function parseJSON(req, url) {  
   if (req.status == 200) {  
       var jsonResponse = JSON.parse(req.responseText);
@@ -851,7 +866,13 @@ function onsubmitbutton(){
 
       var submission = 'http://yousense.aalto.fi/icqa/feedback?json=' + JSON.stringify(objectToSubmit);
       // alert(submission);
-        
+      
+      /*
+      var req = new XMLHttpRequest();
+      var submission = 'http://yousense.aalto.fi/icqa/allquestionsandoptions/1';
+      req.open ("GET", submission);
+      req.send(null);
+      */  
       // SUBMITTOSERVER
       var req = new XMLHttpRequest();
       req.addEventListener("load", requestComplete, false);
@@ -933,7 +954,7 @@ function getUpdatedDetailsSentence(openItemID){
         for(jj = 0; jj < this.items.length; jj+=1){
           var itemText = this.items[jj].prefix + " ";
           if (this.items[jj].selectedOptions.length>0 ){
-              itemText += this.items[jj].getInWords() + " ";
+              itemText += getItemInWords(this.items[jj]) + " ";
           }
           else{
               itemText += ' <span class="placeholder"></span>';

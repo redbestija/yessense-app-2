@@ -1103,6 +1103,14 @@ function displayCategory(itemNumber, categoryToDispNumber){
       return categoryCode;
 }
 
+// Working on categoty order
+// N0 -> own words. Should be defined on the server? 
+
+// select q.id as QuestionID, q.question_prompt as Prefix, q.question_text as QuestionText, opt.id as OptionID, opt.value as OptionValue, opt.category_id as CategoryID, cat.value as CategoryValue
+// from question as q, instance_question_option_map map, icqa.option as opt left join fb_adj_category as cat on (opt.category_id = cat.id)
+// where map.question_id = q.id and map.option_id = opt.id and ((map.instance_id = 1 or map.user_id = (SELECT id FROM user WHERE username = "test" LIMIT 1)))
+// order  by questionID, CategoryID
+
 function onOwnOptionChanged (itemNumber) {
   var inputOwnOption = document.getElementById('idInputOwn');
   
@@ -1118,9 +1126,15 @@ function onOwnOptionChanged (itemNumber) {
       inputOwnOption.value = "";
 
       //displayCategory(itemNumber, categoryToDispNumber);
-      // Get own category div:
-      var ownCategoryDiv = document.getElementById('hidden-category');
-      ownCategoryDiv.innerHTML = displayCategory(itemNumber, 0);
+      if (categoryToAdd.options.size() == 1) {
+        // This was the first option in the Undefined category
+        // Get own category div:
+        var ownCategoryDiv = document.getElementById('hidden-category');
+        ownCategoryDiv.innerHTML = displayCategory(itemNumber, 0);
+      }
+      else {
+        // Just add the newly added option 
+      }
 
       updateDetailsSentence(itemNumber);
     }
@@ -1128,25 +1142,22 @@ function onOwnOptionChanged (itemNumber) {
       var categoryN = items[itemNumber].categories[0];
       var itemNN = categoryN.options.length-1;
       
-    var itemIsAt = isThisOptionSelected (itemNumber, 0, itemNN);
-    if (itemIsAt >= 0){
-      // This item is already selected
-      // Remove item from selected
-      // 11 22 33 -> 33 22 11 -> 33 22  
-      var lastItem = this.items[itemNumber].selectedOptions.length - 1;
-      // Put the last item to the itemIsAt place
-      this.items[itemNumber].selectedOptions[itemIsAt] = 
-      this.items[itemNumber].selectedOptions[lastItem];
-      
-      // Remove the last one
-      this.items[itemNumber].selectedOptions.pop();
+      var itemIsAt = isThisOptionSelected (itemNumber, 0, itemNN);
+      if (itemIsAt >= 0){
+        // This item is already selected
+        // Remove item from selected
+        // 11 22 33 -> 33 22 11 -> 33 22  
+        var lastItem = this.items[itemNumber].selectedOptions.length - 1;
+        // Put the last item to the itemIsAt place
+        this.items[itemNumber].selectedOptions[itemIsAt] = 
+        this.items[itemNumber].selectedOptions[lastItem];
+        
+        // Remove the last one
+        this.items[itemNumber].selectedOptions.pop();
+      }
 
-}
-  
-    
-    categoryN.options.pop();
-
-    updateDetailsSentence(itemNumber);
+      categoryN.options.pop();
+      updateDetailsSentence(itemNumber);
 
     }
   }

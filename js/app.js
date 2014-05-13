@@ -1,6 +1,9 @@
 /* TODO: 
  1. dispable style for submit button
  6. get adjectives from the db! 
+ 7. History after saving!  
+ 8. When to request new values? Ok when page is reloaded.. when else? After say 1 day? remember last rload? 
+ !! Add locaiton question!!! (how?)
 
  + send IDs intead of values! 
  1. Create OWN category (now only created visually)
@@ -89,7 +92,7 @@ function getItemInWords(itemToUse){
             resultingString += " " + getOptionInWords(itemToUse.selectedOptions[j]);
         }
         else {
-            if  (j == this.selectedOptions.length-1){
+            if  (j == itemToUse.selectedOptions.length-1){
                 // last one; and needed
                 resultingString += " and " + getOptionInWords(itemToUse.selectedOptions[j]);
             }
@@ -482,9 +485,35 @@ var items2 = [
       reqOptions.open ("GET", getOptionsURL);
       var target = this;  
       reqOptions.onload  = function() {target.parseJSON(reqOptions, getOptionsURL)};  
+      reqOptions.onerror  = function() {target.error()};  
+      reqOptions.onabort  = function() {target.error()};  
       reqOptions.send(null);
 
-resetAnswers();
+//resetAnswers();
+
+var jsonresponsefromserver;
+var items, homePage;
+  function parseJSON(req, url) {  
+  if (req.status == 200) {  
+      jsonresponsefromserver = JSON.parse(req.responseText);
+      items = jsonresponsefromserver;
+      //alert(jsonresponsefromserver);
+      homePage = displayHomePage();
+      //slider = new PageSlider($("#container"));
+      //$(window).on('hashchange', route);
+      enterRouting();
+
+  }
+}
+
+  function error() {  
+    // Didnt go well (or local testing) 
+    // Use local items
+    items = items2; 
+    homePage = displayHomePage();
+    enterRouting();
+  }
+
 
 // ****************** COMMON FUCTIONS******************************//
 
@@ -845,44 +874,47 @@ function onbuttonclicked(e, clickedItemNumber, clickedCategoryNumber, ClickedOpt
 
 }
 
-var jsonresponsefromserver;
-var items, homePage;
-  function parseJSON(req, url) {  
-  if (req.status == 200) {  
-      jsonresponsefromserver = JSON.parse(req.responseText);
-      items = jsonresponsefromserver;
-      //alert(jsonresponsefromserver);
-      homePage = displayHomePage();
-      //slider = new PageSlider($("#container"));
-      //$(window).on('hashchange', route);
-      enterRouting();
-
-  }
-}
-
 // Sends JSON to the server
+/* Format of the message: 
+     { 
+    "Experiencer":"test",
+    "Answers": [{"ID": 1, "Answers":["now", "yesterday"]}, {"ID": 4, "Answers":["cold", "dry", "motivating"]}, {"ID": 3, "Answers":["reading"]} ], 
+    "Location":"2531", 
+    "WholeSentenceInText": "",
+    "InstanceID": 1,
+    "IsTesting": 1
+     }
+
+*/
 function onsubmitbutton(){
     if (isEverythingFilled()){
       // Yes everything is filled as supposed
       // Submit
+      var answersToBeSent = [];
+      var locationQuestionId;
+      for (var k = 0; k < items.length; k++){
+
+          // Add answers
+          alert(k);
+          var currentAnswer = {
+            ID: items[k].id,
+            Answers: selectedOptionsToArray(items[k])
+          };
+          answersToBeSent.push(currentAnswer);
+
+      }
 
       var objectToSubmit = {
         Experiencer: UserName, 
-        RelativeTime: items[0].selectedOptionsToArray().join(), //When?
-        Location:items[1].selectedOptionsToArray(),  // Where?
-        Activity:items[2].selectedOptionsToArray(), // Activity
-        EventExperience:items[3].selectedOptionsToArray(),//["Cold", "Dry", "Dark"], //What?
-        Reason:items[4].selectedOptionsToArray(),
-        FollowingAction:items[5].selectedOptionsToArray(),//["Open window", "Sit down"],
-        FeelingIntensity:["3", "2", "1"], 
-        Overall:"5",
-        OverallInText:encodeURIComponent(items[6].selectedOptionsToArray()),
+        Answers: answersToBeSent,
+        Location: ["2531"], 
         WholeSentenceInText:getAnswerInWords(),
-        FeedbackSource:"1"// DFw
+        InstanceID:1, // DFw
+        IsTesting:1
         };
 
       var submission = 'http://yousense.aalto.fi/icqa/feedback?json=' + JSON.stringify(objectToSubmit);
-      // alert(submission);
+      alert(submission);
       
        
       // SUBMITTOSERVER
@@ -892,7 +924,7 @@ function onsubmitbutton(){
       req.addEventListener("abort", requestFailed, false);
       req.open ("GET", submission);
       console.log('data = ', getAnswerInWords());
-      req.send(null);
+     // req.send(null);
 
       // new Messi('Here\'s what we received from you:'+ 
       //   '<br></br> \"'  + getAnswerInWords() + '\"', {title: 'THANKS ' + UserName.toUpperCase() + '!', modal: true, width: '250px',autoclose:3000});

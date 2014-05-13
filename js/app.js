@@ -473,6 +473,10 @@ var items2 = [
              */
 
 //this.items[2].selectedOptions[0] = items[2].categories[0].options[0];
+
+      var slider = new PageSlider($("#container"));
+      $(window).on('hashchange', route);
+
       var reqOptions = new XMLHttpRequest();
       var getOptionsURL = 'http://yousense.aalto.fi/icqa/allquestionsandoptions/1&test';
       reqOptions.open ("GET", getOptionsURL);
@@ -595,8 +599,6 @@ function getItemBackgroundCode(itemToCheck){
     
 }
 
-var homePage = displayHomePage();
-
 // returns html for an item to be displayed on the main page
 // <div class="question-container">
 //                <div class="question">When?</div> 
@@ -641,6 +643,7 @@ function displayHomePage(){
         '<div class="content">';
 
   //alert(homePageCode + ' length: ' + items.length);
+  //alert(items.length);
     var ii = 0;
     for(ii = 0; ii < items.length; ii+=1){
       // alert(ii + homePageCode);
@@ -779,8 +782,8 @@ function onsaveusername(){
 }
 
 
-var slider = new PageSlider($("#container"));
-$(window).on('hashchange', route);
+//var slider = new PageSlider($("#container"));
+//$(window).on('hashchange', route);
 
 
 // e - element that was clicked
@@ -843,11 +846,17 @@ function onbuttonclicked(e, clickedItemNumber, clickedCategoryNumber, ClickedOpt
 }
 
 var jsonresponsefromserver;
+var items, homePage;
   function parseJSON(req, url) {  
   if (req.status == 200) {  
       jsonresponsefromserver = JSON.parse(req.responseText);
-      
-      alert(jsonresponsefromserver);
+      items = jsonresponsefromserver;
+      //alert(jsonresponsefromserver);
+      homePage = displayHomePage();
+      //slider = new PageSlider($("#container"));
+      //$(window).on('hashchange', route);
+      enterRouting();
+
   }
 }
 
@@ -1176,7 +1185,7 @@ function enterRouting(event){
       UserName = "";
       UserRoom = "";
       window.location.href = "#login";
-    }
+	    }
     else {
       route(event);
     }
@@ -1218,4 +1227,4 @@ function route(event) {
     onInputChanged();
 }
 
-enterRouting();
+//enterRouting();

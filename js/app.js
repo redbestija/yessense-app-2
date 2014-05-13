@@ -842,11 +842,12 @@ function onbuttonclicked(e, clickedItemNumber, clickedCategoryNumber, ClickedOpt
 
 }
 
-
+var jsonresponsefromserver;
   function parseJSON(req, url) {  
   if (req.status == 200) {  
-      var jsonResponse = JSON.parse(req.responseText);
-      alert(jsonResponse);
+      jsonresponsefromserver = JSON.parse(req.responseText);
+      
+      alert(jsonresponsefromserver);
   }
 }
 

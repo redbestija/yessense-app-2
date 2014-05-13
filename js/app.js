@@ -473,6 +473,13 @@ var items2 = [
              */
 
 //this.items[2].selectedOptions[0] = items[2].categories[0].options[0];
+      var reqOptions = new XMLHttpRequest();
+      var getOptionsURL = 'http://yousense.aalto.fi/icqa/allquestionsandoptions/1&test';
+      reqOptions.open ("GET", getOptionsURL);
+      var target = this;  
+      reqOptions.onload  = function() {target.parseJSON(reqOptions, getOptionsURL)};  
+      reqOptions.send(null);
+
 resetAnswers();
 
 // ****************** COMMON FUCTIONS******************************//
@@ -867,12 +874,7 @@ function onsubmitbutton(){
       var submission = 'http://yousense.aalto.fi/icqa/feedback?json=' + JSON.stringify(objectToSubmit);
       // alert(submission);
       
-      /*
-      var req = new XMLHttpRequest();
-      var submission = 'http://yousense.aalto.fi/icqa/allquestionsandoptions/1';
-      req.open ("GET", submission);
-      req.send(null);
-      */  
+       
       // SUBMITTOSERVER
       var req = new XMLHttpRequest();
       req.addEventListener("load", requestComplete, false);

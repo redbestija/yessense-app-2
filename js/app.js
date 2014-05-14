@@ -893,21 +893,24 @@ function onsubmitbutton(){
       var answersToBeSent = [];
       var locationQuestionId;
       for (var k = 0; k < items.length; k++){
-
-          // Add answers
-          alert(k);
-          var currentAnswer = {
-            ID: items[k].id,
-            Answers: selectedOptionsToArray(items[k])
-          };
-          answersToBeSent.push(currentAnswer);
+          if (items[k].id != 2){ 
+            // Add answers
+              var currentAnswer = {
+              ID: items[k].id,
+              Answers: selectedOptionsToArray(items[k])
+            };
+            answersToBeSent.push(currentAnswer);
+          }
+          else{
+            locationQuestionId = k;
+          }
 
       }
 
       var objectToSubmit = {
         Experiencer: UserName, 
         Answers: answersToBeSent,
-        Location: ["2531"], 
+        Location: selectedOptionsToArray(items[locationQuestionId]).join(), 
         WholeSentenceInText:getAnswerInWords(),
         InstanceID:1, // DFw
         IsTesting:1
@@ -1163,22 +1166,22 @@ function onOwnOptionChanged (itemNumber) {
       // Added
       // Add new oprion to the Own Category ()    
       var categoryToAdd = items[itemNumber].categories[0];
-      categoryToAdd.options.push(new Option(inputOwnOption.value, []));
+      categoryToAdd.options.push({positiveness: 0, title: inputOwnOption.value});
       items[itemNumber].selectedOptions.push(categoryToAdd.options[categoryToAdd.options.length-1]);
 
       // Set the value back to empty
       inputOwnOption.value = "";
 
       //displayCategory(itemNumber, categoryToDispNumber);
-      if (categoryToAdd.options.size() == 1) {
+      // // if (categoryToAdd.options.length == 1) {
         // This was the first option in the Undefined category
         // Get own category div:
         var ownCategoryDiv = document.getElementById('hidden-category');
         ownCategoryDiv.innerHTML = displayCategory(itemNumber, 0);
-      }
-      else {
-        // Just add the newly added option 
-      }
+      //// }
+      //// else {
+      ////   // Just add the newly added option 
+      //// }
 
       updateDetailsSentence(itemNumber);
     }

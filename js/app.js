@@ -480,20 +480,21 @@ var items2 = [
       var slider = new PageSlider($("#container"));
       $(window).on('hashchange', route);
 
+function getOptionsFromTheServer(event){
       var reqOptions = new XMLHttpRequest();
       var getOptionsURL = 'http://yousense.aalto.fi/icqa/allquestionsandoptions/' + config.InstanceID +'&' + UserName;
       reqOptions.open ("GET", getOptionsURL);
       var target = this;  
-      reqOptions.onload  = function() {target.parseJSON(reqOptions, getOptionsURL)};  
+      reqOptions.onload  = function() {target.parseJSON(reqOptions, getOptionsURL, event)};  
       reqOptions.onerror  = function() {target.error()};  
       reqOptions.onabort  = function() {target.error()};  
       reqOptions.send(null);
-
+}
 //resetAnswers();
 
 var jsonresponsefromserver;
 var items, homePage;
-  function parseJSON(req, url) {  
+  function parseJSON(req, url, event) {  
   if (req.status == 200) {  
       jsonresponsefromserver = JSON.parse(req.responseText);
       items = jsonresponsefromserver;
@@ -502,7 +503,7 @@ var items, homePage;
       homePage = displayHomePage();
       //slider = new PageSlider($("#container"));
       //$(window).on('hashchange', route);
-      enterRouting();
+      route(event);
 
   }
 }
@@ -1254,29 +1255,35 @@ function route(event) {
     }
     else{
 
-    
-    // Get the number out of it: get number as a string and then parse it into int (base 10, not 8 :)
-    var pageNum = parseInt(hash.replace( /^\D+/g, ''),10);
+    if (items != null){
+      // Get the number out of it: get number as a string and then parse it into int (base 10, not 8 :)
+      var pageNum = parseInt(hash.replace( /^\D+/g, ''),10);
 
-    // getLocations();
-    // UserName = window.localStorage.getItem("YouSenseUserName");
-    // UserRoom = window.localStorage.getItem("YouSenseUserRoom");
+      // getLocations();
+      // UserName = window.localStorage.getItem("YouSenseUserName");
+      // UserRoom = window.localStorage.getItem("YouSenseUserRoom");
+      
+      // if (UserName == null){
+      //   $window.location.href = "#login";
+      //   page = displayLogin();
+      // }
+      // else 
+      if (pageNum>=0){
+          page = displayOptionsPage(pageNum);
+      }
+      else{ 
+        page = displayHomePage();
+      }
     
-    // if (UserName == null){
-    //   $window.location.href = "#login";
-    //   page = displayLogin();
-    // }
-    // else 
-    if (pageNum>=0){
-        page = displayOptionsPage(pageNum);
+      zoomScreen();
+      slider.slidePage($(page));   
+      onInputChanged();
     }
-    else{ 
-      page = displayHomePage();
+    else{
+      // There's no items yet 
+      getOptionsFromTheServer(event);
     }
   }
-    zoomScreen();
-    slider.slidePage($(page));   
-    onInputChanged();
 }
 
-//enterRouting();
+enterRouting();

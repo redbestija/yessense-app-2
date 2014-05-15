@@ -481,7 +481,7 @@ var items2 = [
       $(window).on('hashchange', route);
 
       var reqOptions = new XMLHttpRequest();
-      var getOptionsURL = 'http://yousense.aalto.fi/icqa/allquestionsandoptions/1&test';
+      var getOptionsURL = 'http://yousense.aalto.fi/icqa/allquestionsandoptions/' + config.InstanceID +'&' + UserName;
       reqOptions.open ("GET", getOptionsURL);
       var target = this;  
       reqOptions.onload  = function() {target.parseJSON(reqOptions, getOptionsURL)};  
@@ -497,6 +497,7 @@ var items, homePage;
   if (req.status == 200) {  
       jsonresponsefromserver = JSON.parse(req.responseText);
       items = jsonresponsefromserver;
+      getQuesitonSettingsFromConfig();
       //alert(jsonresponsefromserver);
       homePage = displayHomePage();
       //slider = new PageSlider($("#container"));
@@ -510,10 +511,25 @@ var items, homePage;
     // Didnt go well (or local testing) 
     // Use local items
     items = items2; 
+    getQuesitonSettingsFromConfig();
     homePage = displayHomePage();
     enterRouting();
   }
 
+
+function getQuesitonSettingsFromConfig(){
+  for (var z=0; z < config.QuestionsHaveToBeFilled_IDs.length; z++)
+  {
+    items[config.QuestionsHaveToBeFilled_IDs[z]].isRequired = true; 
+  }
+
+  for (z=0; z < config.QuestionsPredefinedAswers_IDs.length; z++){
+    itemIDtoSelect = config.QuestionsPredefinedAswers_IDs[z].questionID;
+    categoryIDToSelect = config.QuestionsPredefinedAswers_IDs[z].categoryID;
+    optionIDToSelect = config.QuestionsPredefinedAswers_IDs[z].optionID;
+    items[itemIDtoSelect].selectedOptions.push(items[itemIDtoSelect].categories[categoryIDToSelect].options[optionIDToSelect]); 
+  }
+}
 
 // ****************** COMMON FUCTIONS******************************//
 
@@ -912,8 +928,8 @@ function onsubmitbutton(){
         Answers: answersToBeSent,
         Location: selectedOptionsToArray(items[locationQuestionId]).join(), 
         WholeSentenceInText:getAnswerInWords(),
-        InstanceID:1, // DFw
-        IsTesting:1
+        InstanceID:config.InstanceID, // DFw
+        IsTesting:config.IsTesting
         };
 
       var submission = 'http://yousense.aalto.fi/icqa/feedback?json=' + JSON.stringify(objectToSubmit);

@@ -11,11 +11,12 @@ var config = {
     // how to get visualisations
     VisuURL: "",
     // ID of the installation (to get proper set of questions etc.)
-    FeedbackSourceID: 1,
+    InstanceID: 1,
 
-    QuestionsHaveToBeFilled: [0, 1, 3],
+// Number of questions in the list ae used, not IDs from the DB 
+    QuestionsHaveToBeFilled_IDs: [0, 1, 3],
 
-    QuestionsPredefinedAswers: [{question:0, category:0,option:0}, 
-    							{question:1, category:0,option:0}]
+    QuestionsPredefinedAswers_IDs: [{questionID:0, categoryID:1,optionID:0}, 
+    							{questionID:1, categoryID:1,optionID:0}]
 
 };

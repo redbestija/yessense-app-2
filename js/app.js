@@ -931,7 +931,7 @@ function onsubmitbutton(){
         Location: selectedOptionsToArray(items[locationQuestionId]).join(), 
         WholeSentenceInText:getAnswerInWords(),
         InstanceID:config.InstanceID, // DFw
-        IsTesting:config.IsTesting
+        IsTesting:config.IsTestRun
         };
 
       var submission = 'http://yousense.aalto.fi/icqa/feedback?json=' + JSON.stringify(objectToSubmit);
@@ -945,7 +945,7 @@ function onsubmitbutton(){
       req.addEventListener("abort", requestFailed, false);
       req.open ("GET", submission);
       console.log('data = ', getAnswerInWords());
-     // req.send(null);
+      req.send(null);
 
       // new Messi('Here\'s what we received from you:'+ 
       //   '<br></br> \"'  + getAnswerInWords() + '\"', {title: 'THANKS ' + UserName.toUpperCase() + '!', modal: true, width: '250px',autoclose:3000});
@@ -988,6 +988,7 @@ function requestComplete (evt){
     });
 
   resetAnswers();
+  getQuesitonSettingsFromConfig();
   route();
 }
 var errortextt;
@@ -1007,8 +1008,9 @@ function requestFailed (evt){
     clickToHide: true
     });
 
-resetAnswers();
-  route();
+ resetAnswers();
+ getQuesitonSettingsFromConfig();
+ route();
 }
 
 

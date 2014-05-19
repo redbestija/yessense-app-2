@@ -486,8 +486,8 @@ function getOptionsFromTheServer(event){
       reqOptions.open ("GET", getOptionsURL);
       var target = this;  
       reqOptions.onload  = function() {target.parseJSON(reqOptions, getOptionsURL, event)};  
-      reqOptions.onerror  = function() {target.error()};  
-      reqOptions.onabort  = function() {target.error()};  
+      reqOptions.onerror  = function() {target.error(event)};  
+      reqOptions.onabort  = function() {target.error(event)};  
       reqOptions.send(null);
 }
 //resetAnswers();
@@ -508,13 +508,14 @@ var items, homePage;
   }
 }
 
-  function error() {  
+  function error(event) {  
     // Didnt go well (or local testing) 
     // Use local items
     items = items2; 
     getQuesitonSettingsFromConfig();
     homePage = displayHomePage();
-    enterRouting();
+    // enterRouting();
+    route(event);
   }
 
 
@@ -1252,37 +1253,40 @@ function route(event) {
     if (hash == "#login"){
       // Route log in page
         page = displayLogin();
+        zoomScreen();
+        slider.slidePage($(page));   
+        onInputChanged();
+
     }
     else{
+      if (items != null){
+        // Get the number out of it: get number as a string and then parse it into int (base 10, not 8 :)
+        var pageNum = parseInt(hash.replace( /^\D+/g, ''),10);
 
-    if (items != null){
-      // Get the number out of it: get number as a string and then parse it into int (base 10, not 8 :)
-      var pageNum = parseInt(hash.replace( /^\D+/g, ''),10);
-
-      // getLocations();
-      // UserName = window.localStorage.getItem("YouSenseUserName");
-      // UserRoom = window.localStorage.getItem("YouSenseUserRoom");
-      
-      // if (UserName == null){
-      //   $window.location.href = "#login";
-      //   page = displayLogin();
-      // }
-      // else 
-      if (pageNum>=0){
-          page = displayOptionsPage(pageNum);
-      }
-      else{ 
-        page = displayHomePage();
-      }
+        // getLocations();
+        // UserName = window.localStorage.getItem("YouSenseUserName");
+        // UserRoom = window.localStorage.getItem("YouSenseUserRoom");
+        
+        // if (UserName == null){
+        //   $window.location.href = "#login";
+        //   page = displayLogin();
+        // }
+        // else 
+        if (pageNum>=0){
+            page = displayOptionsPage(pageNum);
+        }
+        else{ 
+          page = displayHomePage();
+        }
     
-      zoomScreen();
-      slider.slidePage($(page));   
-      onInputChanged();
-    }
-    else{
-      // There's no items yet 
-      getOptionsFromTheServer(event);
-    }
+        zoomScreen();
+        slider.slidePage($(page));   
+        onInputChanged();
+      }
+      else{
+        // There's no items yet 
+        getOptionsFromTheServer(event);
+      }
   }
 }
 

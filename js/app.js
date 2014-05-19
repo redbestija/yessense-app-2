@@ -1107,10 +1107,11 @@ function displayOptionsPage(itemNumber) {
 
 function displayCategory(itemNumber, categoryToDispNumber){
   var categoryCode = "";
-        if (items[itemNumber].categories[categoryToDispNumber].options.length > 0){
-        var j;
         // Add section 
         categoryCode += '<div class="adj-section" id = "id_adj_section_'+ categoryToDispNumber + '">';
+
+        if (items[itemNumber].categories[categoryToDispNumber].options.length > 0){
+        var j;
 
         for(j = 0; j < items[itemNumber].categories[categoryToDispNumber].options.length; j+=1){
             
@@ -1162,9 +1163,9 @@ function displayCategory(itemNumber, categoryToDispNumber){
             }
             categoryCode += 'onclick="onbuttonclicked(this, '+itemNumber + ',' +categoryToDispNumber + ',' + j + ');">' + currentOption.title+ '</button>';
         }
+      }
         // End of the section
         categoryCode += '</div>';
-      }
 
       return categoryCode;
 }

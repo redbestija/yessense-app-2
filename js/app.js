@@ -1061,9 +1061,15 @@ function displayOptionsPage(itemNumber) {
             '</div>';
 
     pageCode +='<div class="separator"> </div>' + 
-              '<div class="input-container"><input onchange="onOwnOptionChanged('+itemNumber + ');" autocomplete="off" autocorrect="off" '+
-          'spellcheck="false" id="idInputOwn" placeholder="ENTER OWN WORDS HERE"></input></div>'+
+              '<div style="text-transform: uppercase;" class="input-container"><input onchange="onOwnOptionChanged('+itemNumber + ');" autocomplete="off" autocorrect="off" '+
+          'spellcheck="false" id="idInputOwn_'+itemNumber+'" placeholder="ENTER OWN WORDS HERE"></input></div>'+
           '<div class="separator"> </div>'; 
+
+    // pageCode +='<div class="separator"> </div>' + 
+    //           '<div class="input-container"><input onchange="alert('+itemNumber + ');" autocomplete="off" autocorrect="off" '+
+    //       'spellcheck="false" id="idInputOwn_'+itemNumber+'" placeholder="ENTER OWN WORDS HERE"></input></div>'+
+    //       '<div class="separator"> </div>'; 
+
           // hidden placeholer for own category
           // '<div id="hidden-category"></div>';
 
@@ -1110,7 +1116,7 @@ function displayOptionsPage(itemNumber) {
 function displayCategory(itemNumber, categoryToDispNumber){
   var categoryCode = "";
         // Add section 
-        categoryCode += '<div class="adj-section" id = "id_adj_section_'+ categoryToDispNumber + '">';
+        categoryCode += '<div class="adj-section" id = "id_adj_section_'+itemNumber +'_'+ categoryToDispNumber + '">';
 
         if (items[itemNumber].categories[categoryToDispNumber].options.length > 0){
         var j;
@@ -1181,7 +1187,8 @@ function displayCategory(itemNumber, categoryToDispNumber){
 // order  by questionID, CategoryID
 
 function onOwnOptionChanged (itemNumber) {
-  var inputOwnOption = document.getElementById('idInputOwn');
+
+  var inputOwnOption = document.getElementById('idInputOwn_' + itemNumber);
   
   if (inputOwnOption != null){
     if(inputOwnOption.value != "" ){
@@ -1198,7 +1205,7 @@ function onOwnOptionChanged (itemNumber) {
       // // if (categoryToAdd.options.length == 1) {
         // This was the first option in the Undefined category
         // Get own category div:
-        var ownCategoryDiv = document.getElementById('id_adj_section_0');
+        var ownCategoryDiv = document.getElementById('id_adj_section_'+itemNumber+'_0');
         ownCategoryDiv.innerHTML = displayCategory(itemNumber, 0);
       //// }
       //// else {

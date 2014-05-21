@@ -946,7 +946,7 @@ function onsubmitbutton(){
         };
 
       var submission = 'http://yousense.aalto.fi/icqa/feedback?json=' + JSON.stringify(objectToSubmit);
-      alert(submission);
+      //alert(submission);
       
        
       // SUBMITTOSERVER
@@ -994,7 +994,7 @@ function requestComplete (evt){
     { style: 'foo2',
     localPosition: 'top center',
     autoHide: true,
-    autoHideDelay: 6000,
+    autoHideDelay: 30000,
     clickToHide: true
     });
 
@@ -1015,7 +1015,7 @@ function requestFailed (evt){
     { style: 'foo',
     localPosition: 'top center',
     autoHide: true,
-    autoHideDelay: 6000,
+    autoHideDelay: 30000,
     clickToHide: true
     });
 

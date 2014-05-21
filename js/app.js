@@ -1072,7 +1072,7 @@ function displayOptionsPage(itemNumber) {
             '</div>';
 
     pageCode +='<div class="separator"> </div>' + 
-              '<div style="text-transform: uppercase;" class="input-container"><input onblur="alert(1);" onchange="onOwnOptionChanged('+itemNumber + ');" autocomplete="off" autocorrect="off" '+
+              '<div style="text-transform: uppercase;" class="input-container"><input onblur="onOwnOptionChanged('+itemNumber + ');" autocomplete="off" autocorrect="off" '+
           'spellcheck="false" id="idInputOwn_'+itemNumber+'" placeholder="ENTER OWN WORDS HERE"></input></div>'+
           '<div class="separator"> </div>'; 
 

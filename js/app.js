@@ -1072,7 +1072,7 @@ function displayOptionsPage(itemNumber) {
             '</div>';
 
     pageCode +='<div class="separator"> </div>' + 
-              '<div style="text-transform: uppercase;" class="input-container"><input onblur="onOwnOptionChanged('+itemNumber + ');" autocomplete="off" autocorrect="off" '+
+              '<div style="text-transform: uppercase;" class="input-container"><input  onchange="onOwnOptionChanged('+itemNumber + ');" onblur="onOwnOptionChanged('+itemNumber + ');" autocomplete="off" autocorrect="off" '+
           'spellcheck="false" id="idInputOwn_'+itemNumber+'" placeholder="ENTER OWN WORDS HERE"></input></div>'+
           '<div class="separator"> </div>'; 
 
@@ -1207,7 +1207,7 @@ function onOwnOptionChanged (itemNumber) {
       // Add new oprion to the Own Category ()    
       var categoryToAdd = items[itemNumber].categories[0];
       categoryToAdd.options.push({positiveness: 0, title: inputOwnOption.value});
-      items[itemNumber].selectedOptions.push(categoryToAdd.options[categoryToAdd.options.length-1]);
+      //items[itemNumber].selectedOptions.push(categoryToAdd.options[categoryToAdd.options.length-1]);
 
       // Set the value back to empty
       inputOwnOption.value = "";
@@ -1222,31 +1222,34 @@ function onOwnOptionChanged (itemNumber) {
       //// else {
       ////   // Just add the newly added option 
       //// }
+      // alert(categoryToAdd.options.length - 1); 
+      onbuttonclicked(document.getElementById('buttonId0_' + (categoryToAdd.options.length - 1)), itemNumber, 0, categoryToAdd.options.length - 1);
+      // onbuttonclicked(document.getElementById('buttonId0_' + categoryToAdd.options.length - 1), itemNumber, 0, categoryToAdd.options.length - 1);
 
       updateDetailsSentence(itemNumber);
     }
-    else{
-      var categoryN = items[itemNumber].categories[0];
-      var itemNN = categoryN.options.length-1;
+    // else{
+    //   var categoryN = items[itemNumber].categories[0];
+    //   var itemNN = categoryN.options.length-1;
       
-      var itemIsAt = isThisOptionSelected (itemNumber, 0, itemNN);
-      if (itemIsAt >= 0){
-        // This item is already selected
-        // Remove item from selected
-        // 11 22 33 -> 33 22 11 -> 33 22  
-        var lastItem = this.items[itemNumber].selectedOptions.length - 1;
-        // Put the last item to the itemIsAt place
-        this.items[itemNumber].selectedOptions[itemIsAt] = 
-        this.items[itemNumber].selectedOptions[lastItem];
+    //   var itemIsAt = isThisOptionSelected (itemNumber, 0, itemNN);
+    //   if (itemIsAt >= 0){
+    //     // This item is already selected
+    //     // Remove item from selected
+    //     // 11 22 33 -> 33 22 11 -> 33 22  
+    //     var lastItem = this.items[itemNumber].selectedOptions.length - 1;
+    //     // Put the last item to the itemIsAt place
+    //     this.items[itemNumber].selectedOptions[itemIsAt] = 
+    //     this.items[itemNumber].selectedOptions[lastItem];
         
-        // Remove the last one
-        this.items[itemNumber].selectedOptions.pop();
-      }
+    //     // Remove the last one
+    //     this.items[itemNumber].selectedOptions.pop();
+    //   }
 
-      categoryN.options.pop();
-      updateDetailsSentence(itemNumber);
+    //   categoryN.options.pop();
+    //   updateDetailsSentence(itemNumber);
 
-    }
+    // }
   }
   
 }

@@ -30,6 +30,7 @@ function PageSlider(container) {
 
     }
 
+    // var checkIfRemoved = false;
     // Use this function directly if you want to control the sliding direction outside PageSlider
     this.slidePageFrom = function(page, from) {
 
@@ -41,19 +42,37 @@ function PageSlider(container) {
             return;
         }
 
+        // checkIfRemoved = false;
         // Position the page at the starting position of the animation
         page.attr("class", "page " + from);
 
         currentPage.one('webkitTransitionEnd', function(e) {
+            //checkIfRemoved = true;
             $(e.target).remove();
         });
-
+        currentPage.one('transitionend', function(e) {
+            //checkIfRemoved = true;
+            $(e.target).remove();
+        });
         // Force reflow. More information here: http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/
         container[0].offsetWidth;
 
         // Position the new page and the current page at the ending position of their animation with a transition class indicating the duration of the animation
         page.attr("class", "page transition center");
-        currentPage.attr("class", "page transition " + (from === "left" ? "right" : "left"));
+        
+        var classNameToRemove = "page transition " + (from === "left" ? "right" : "left");
+        currentPage.attr("class", classNameToRemove);
+        // var myTimeout = setTimeout(function() {
+        //     if (!checkIfRemoved){
+        //         checkIfRemoved = true;
+        //         $('#container').find('div').first().remove();
+        //         // alert(": " + classNameToRemove + "!!!!!!" + container.first().html()) ;
+        //         // alert($('.' + classNameToRemove).html());
+        //         // alert($('.' + classNameToRemove).first().html());
+        //      //   $('.' + classNameToRemove).first().remove();
+        //     }
+        // }, 1500);        
+
         currentPage = page;
     }
 

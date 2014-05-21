@@ -89,17 +89,17 @@ function getItemInWords(itemToUse){
     for(j = 0; j < itemToUse.selectedOptions.length; j+=1){
         if (j==0){
             // The first item in the list
-            resultingString += " " + getOptionInWords(itemToUse.selectedOptions[j]);
+            resultingString += " " + getOptionInWords(itemToUse.selectedOptions[j]).toUpperCase();
         }
         else {
             if  (j == itemToUse.selectedOptions.length-1){
                 // last one; and needed
-                resultingString += " and " + getOptionInWords(itemToUse.selectedOptions[j]);
+                resultingString += " and " + getOptionInWords(itemToUse.selectedOptions[j]).toUpperCase();
             }
             else {
                 // It is not the last one
                 // comma needed
-                resultingString += ", " + getOptionInWords(itemToUse.selectedOptions[j]);
+                resultingString += ", " + getOptionInWords(itemToUse.selectedOptions[j]).toUpperCase();
             }
       }
     }
@@ -520,11 +520,18 @@ var items, homePage;
 
 
 function getQuesitonSettingsFromConfig(){
+  // Required questions
   for (var z=0; z < config.QuestionsHaveToBeFilled_IDs.length; z++)
   {
     items[config.QuestionsHaveToBeFilled_IDs[z]].isRequired = true; 
   }
+  // Questions with only one answer possible
+  for (var z=0; z < config.QuestionsWithOneAnswerOnly_IDs.length; z++)
+  {
+    items[config.QuestionsWithOneAnswerOnly_IDs[z]].isOnlyOneSelected = true; 
+  }
 
+  // Default answers
   for (z=0; z < config.QuestionsPredefinedAswers_IDs.length; z++){
     itemIDtoSelect = config.QuestionsPredefinedAswers_IDs[z].questionID;
     categoryIDToSelect = config.QuestionsPredefinedAswers_IDs[z].categoryID;
@@ -682,10 +689,14 @@ function displayItem(itemTD, itemN){
 
 function displayHomePage(){
 
+    var usernameToAdd = ""; 
+    if (UserName != null && UserName != ""){
+      usernameToAdd = UserName + ", ";
+    }
     var homePageCode = '<div>'+
       '<header>'+ //&#8617; &larr;
             '<a href="#login" class="adj-button arrow-button arrow-button-left">&ensp;&larr;&ensp;</a>' + 
-            '<div class="header-text">How do you feel?</div>'+
+            '<div class="header-text">'+ usernameToAdd +'how do you feel here?</div>'+
         '</header>'+
         '<div class="content">';
 
@@ -1061,7 +1072,7 @@ function displayOptionsPage(itemNumber) {
             '</div>';
 
     pageCode +='<div class="separator"> </div>' + 
-              '<div style="text-transform: uppercase;" class="input-container"><input onchange="onOwnOptionChanged('+itemNumber + ');" autocomplete="off" autocorrect="off" '+
+              '<div style="text-transform: uppercase;" class="input-container"><input onblur="alert(1);" onchange="onOwnOptionChanged('+itemNumber + ');" autocomplete="off" autocorrect="off" '+
           'spellcheck="false" id="idInputOwn_'+itemNumber+'" placeholder="ENTER OWN WORDS HERE"></input></div>'+
           '<div class="separator"> </div>'; 
 

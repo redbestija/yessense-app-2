@@ -15,7 +15,7 @@ var config = {
 
 // Number of questions in the list ae used, not IDs from the DB 
     QuestionsHaveToBeFilled_IDs: [0, 1, 3],
-
+    QuestionsWithOneAnswerOnly_IDs: [1],
     QuestionsPredefinedAswers_IDs: [{questionID:0, categoryID:1,optionID:0}, 
     							{questionID:1, categoryID:1,optionID:0}]
 

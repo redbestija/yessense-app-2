@@ -328,6 +328,7 @@ input{
   box-sizing: border-box;
   -webkit-user-select: text;
   text-align: center;
+  text-transform: uppercase;
 }
 
 

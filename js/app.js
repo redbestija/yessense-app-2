@@ -1070,7 +1070,7 @@ function displayOptionsPage(itemNumber) {
         '</header>' + 
         '<div class="content">' + 
             '<div class="sentense-container">' + 
-                '<span class="text" id="detailspageheaderid">' +getUpdatedDetailsSentence(itemNumber)+'</span>' + 
+                '<a href="#" style="text-decoration: none;" class="text" id="detailspageheaderid">' +getUpdatedDetailsSentence(itemNumber)+'</a>' + 
             '</div>';
 
     pageCode +='<div class="separator"> </div>' + 

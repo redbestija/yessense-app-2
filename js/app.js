@@ -845,7 +845,7 @@ function onsaveusername(){
 
 
 // e - element that was clicked
-var ePrevious = ""; // previosly clicked element 
+var ePrevious = null; // previosly clicked element 
 function onbuttonclicked(e, clickedItemNumber, clickedCategoryNumber, ClickedOptionNumber){
   var itemIsAt = isThisOptionSelected (clickedItemNumber, clickedCategoryNumber, ClickedOptionNumber);
   if (itemIsAt >= 0){
@@ -875,7 +875,7 @@ function onbuttonclicked(e, clickedItemNumber, clickedCategoryNumber, ClickedOpt
       // Need to delect the prev. one then
 // alert("again" + ePrevious);
       //Style
-      if (ePrevious != ""){
+      if (ePrevious != null){
         // alert(ePrevious);
         document.getElementById(ePrevious).className = document.getElementById(ePrevious).className.replace(/\bbutton-selected\b/,'');
       }
@@ -891,7 +891,9 @@ function onbuttonclicked(e, clickedItemNumber, clickedCategoryNumber, ClickedOpt
 
       // Add selected
       e.className += " button-selected";
-      ePrevious = e.id;
+      if (this.items[clickedItemNumber].isOnlyOneSelected){
+	ePrevious = e.id;
+      }
       // alert(ePrevious + ' dd' + e.id);
       updateDetailsSentence(clickedItemNumber );
       
@@ -1152,8 +1154,9 @@ function displayCategory(itemNumber, categoryToDispNumber){
               // is selected
               // Add style
               categoryCode += ' button-selected"';
-              ePrevious = buttonID;
-
+              if (this.items[itemNumber].isOnlyOneSelected){
+		ePrevious = buttonID;
+	      }
                           }
             else{
              categoryCode += '"';
